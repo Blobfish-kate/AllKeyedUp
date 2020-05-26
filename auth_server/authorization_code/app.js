@@ -7,6 +7,7 @@
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 
+var PORT = process.env.PORT || 8888
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -42,7 +43,7 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + 'build'))
    .use(cors())
    .use(cookieParser());
 
@@ -151,4 +152,4 @@ app.get('/refresh_token', function(req, res) {
 
 console.log('Listening on 8888');
 console.log('Client secret is ' + process.env.CLIENT_SECRET)
-app.listen(8888);
+app.listen(PORT);
