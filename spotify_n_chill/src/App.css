@@ -1,0 +1,30 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: black;
+  width: 100vw;
+  color: black
+
+}
+
+h1 {
+  font-size: 100px;
+  color: whitesmoke;
+  font-family: 'Monoton';
+}
+
+h2 {
+  font-family: 'Lobster';
+  color: white;
+  font-size: xx-large;
+}
+
+button {
+  width: 40%;
+  height: 20%;
+  font-family: 'Lobster';
+  margin-top: 20px;
+  border: 1px solid black
+}

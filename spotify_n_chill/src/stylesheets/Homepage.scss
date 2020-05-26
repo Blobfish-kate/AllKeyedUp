@@ -1,0 +1,52 @@
+.wrap {
+    height: 100%;
+    width: 100vw;
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 200px;
+}
+
+
+$total: 200;
+$size: 80;
+
+.c {
+    position: absolute;
+    width: $size+px;
+    height: $size+px;
+    margin-top: -$size/2+px;
+    margin-left: -$size/2+px;
+    transform: translate3d(100vw,100vh, -170px);
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+@for $i from 1 through $total {
+    $color: rgb(202, 237, 240);
+
+    @if $i % 4 == 0 {
+        $color: grey
+    } @else if $i % 3 == 0 {
+        $color: whitesmoke
+    } @else if $i % 2 == 0 {
+        $color: rgb(201, 171, 158)
+    }
+
+    .c:nth-child(#{$i}){
+        animation: anim#{$i} 2s infinite alternate;
+        animation-delay: $i * -.1s;
+        background: $color;
+        box-shadow: 0 0 25px 3px lighten($color, 5%);
+        border: 1px solid $color;
+    }
+    @keyframes anim#{$i}{
+        30% {
+        opacity: 1;
+        }
+        100% {
+        transform: translate3d(random(50)+vw, random(100)+vh, 0);
+        opacity: 0;
+        }
+    }
+}
+
