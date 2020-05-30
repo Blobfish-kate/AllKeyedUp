@@ -24,28 +24,41 @@ const Content = styled.div`
 `
 const Button = styled.button`
     height: 150%;
-    margin-top: 8%;
-    width: 40%;
+    margin-top: 2%;
+    margin-right: 1%;
+    margin-left: 1%;
+    width: 20%;
     font-size: larger;
 `
 const Link = styled.a`
 
 `
 
-function Homepage() {
+function Homepage(props) {
     let c = []
     for(let i=0; i < 200; i++) {
         c.push(<span className="c" />)
     }
+
+    let anchor
+    if(process.env.NODE_ENV !== 'production') {
+      anchor = 'ec2-3-10-223-4.eu-west-2.compute.amazonaws.com'
+    } else {
+      anchor = 'ec2-3-10-223-4.eu-west-2.compute.amazonaws.com'
+    }
+
     return(
         <Container className="wrap">
             {c}
             <Content>
                 <Title>All Keyed Up</Title>
                 <h2>Song recommendations in your favourite key...</h2>
-                <Link href="http://localhost:8888/login">
+                <Link href={anchor}>
                     <Button type="button" className="btn btn-light">Login With Spotify</Button>
                 </Link>
+            
+                <Button onClick={props.logout} type="button" className="btn btn-light">Log out</Button>
+            
             </Content>
         </Container>
     )

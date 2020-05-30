@@ -21,6 +21,7 @@ class App extends React.Component {
       spotifyApi.setAccessToken(params.access_token)
     }
     this.getHashParams = this.getHashParams.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
   getHashParams() {
@@ -33,6 +34,12 @@ class App extends React.Component {
     console.log("Hash params:" + hashParams)
     return hashParams
   }
+
+  logout() {
+    const url = 'https://www.spotify.com/logout/'                                                                                                                                                                                                                                                                               
+    const spotifyLogoutWindow = window.open(url, 'Spotify Logout', 'width=700,height=500,top=40,left=40')                                                                                                
+    setTimeout(() => spotifyLogoutWindow.close(), 2000)
+  }
   
   render() {
 
@@ -42,7 +49,9 @@ class App extends React.Component {
           <Route path="/recommendation" component={() => <RecommendationForm />}/>
           <Route path="/" component={() => <Homepage 
             getHashParams={this.state.getHashParams}
-            user={this.state} exact/>} 
+            user={this.state} exact
+            logout={this.logout}
+            />} 
           />
         </Switch>
       </BrowserRouter>

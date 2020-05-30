@@ -89,6 +89,7 @@ class RecommendationForm extends React.Component {
   }
   
   render() {
+
     const genres = this.state.genres ? this.state.genres.map(item => <option>{item}</option>) : null
     const majorKeys = Object.keys(this.state.keyList).map(item => <option>{item} major</option>)
     const minorKeys = Object.keys(this.state.keyList).map(item => <option>{item} minor</option>)
@@ -113,6 +114,7 @@ class RecommendationForm extends React.Component {
       color: black
     `
     return(
+      
       <div>
         <h1>All Keyed Up</h1>
         <div style={{display: this.state.recommendedSongs && "none"}} >
