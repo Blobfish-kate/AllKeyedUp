@@ -11,29 +11,10 @@ const spotifyApi = new SpotifyWebApi()
 
 class App extends React.Component {
   constructor() {
-    super()
-    const params = this.getHashParams()
-    this.state = {
-      loggedIn: params.access_token ? true : false,
-      token: params.access_token,
-    }
-    if (params.access_token){
-      spotifyApi.setAccessToken(params.access_token)
-    }
-    this.getHashParams = this.getHashParams.bind(this)
+    super() 
     this.logout = this.logout.bind(this)
   }
 
-  getHashParams() {
-    var hashParams = {}
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-      q = window.location.hash.substring(1)
-    while (e = r.exec(q)) {
-      hashParams[e[1]] = decodeURIComponent(e[2])
-    }
-    console.log("Hash params:" + hashParams)
-    return hashParams
-  }
 
   logout() {
     const url = 'https://www.spotify.com/logout/'                                                                                                                                                                                                                                                                               
@@ -48,7 +29,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/recommendation" component={() => <RecommendationForm />}/>
           <Route path="/" component={() => <Homepage 
-            getHashParams={this.state.getHashParams}
+            
             user={this.state} exact
             logout={this.logout}
             />} 

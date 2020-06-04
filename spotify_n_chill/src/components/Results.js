@@ -20,15 +20,40 @@ function Results(props) {
     return(
         <Container className="container">
             <TitleContainer className="jumbotron">
-                <H2>Results for: {props.genreSelection} tracks in {props.keySelection}</H2>
-                <h4>Want to change your search critera?</h4>
-                <br />
-                <button className="btn btn-light" onClick={props.backButton}>Back</button>
+                {props.listLength > 0 && <div>
+                    <H2>
+                        Results for: {props.genreSelection} tracks
+                        {props.keySelection &&
+                            <span> in {props.keySelection}</span>
+                        }
+                        {props.timeSelection && 
+                            <span> with {props.timeSelection} beats per bar</span>
+                        }
+                    </H2>
+                    <br />
+                    <h4>Want to change your search critera?</h4>
+                    <br />
+                    <button className="btn btn-light" onClick={props.backButton}>Back</button>
+                </div> }
+                {props.listLength === 0 && <div>
+                    <H2>
+                        No results for: {props.genreSelection} tracks
+                        {props.keySelection &&
+                            <span> in {props.keySelection}</span>
+                        }
+                        {props.timeSelection && 
+                            <span> with {props.timeSelection} beats per bar</span>
+                        }
+                    </H2>
+                    <br />
+                    <h4>Looks like your search was too specific, you hipster!</h4>
+                    <br />
+                    <button className="btn btn-light" onClick={props.backButton}>Change search criteria</button>
+                </div> }
             </TitleContainer>
-            <div className="container">
-                <div className="row justify-content-center">
-                    {props.recommendedSongs}
-                </div>
+
+            <div className="row justify-content-center">
+                {props.recommendedSongs}
             </div>
         </Container>
     )

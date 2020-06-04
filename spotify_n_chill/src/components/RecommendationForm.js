@@ -19,8 +19,9 @@ class RecommendationForm extends React.Component {
       mode: {'major': 1, 'minor': 0},
       keySelection: "",
       genreSelection: "",
-      timeSelection: 0,
-      recommendedSongs: null
+      timeSelection: null,
+      recommendedSongs: null,
+      red: false
     }
     if (params.access_token){
       spotifyApi.setAccessToken(params.access_token)
@@ -52,22 +53,33 @@ class RecommendationForm extends React.Component {
   }
 
   getRecommendations() {
-    let genre = this.state.genreSelection
-    let key = this.state.keyList[this.state.keySelection.substring(0, this.state.keySelection.indexOf('m')-1)]
-    let mode = this.state.mode[this.state.keySelection.substring(this.state.keySelection.indexOf('m'), this.state.keySelection.length)]
-    let time = parseInt(this.state.timeSelection)
-    console.log("Key: " + key)
-    console.log("Mode: " + mode)
-    spotifyApi.getRecommendations({
-      seed_genres: genre, 
-      min_key: key, 
-      max_key: key, 
-      min_mode: mode, 
-      max_mode: mode,
-      min_time_signature: time,
-      max_time_signature: time,
-      target_popularity: 100
-    })
+    let params = {target_popularity: 100}
+
+    if(this.state.genres.includes(this.state.genreSelection)) {
+      params.seed_genres = this.state.genreSelection
+    } else {
+      this.setState({
+        red: true
+      })
+    }
+
+    if(this.state.keySelection) {
+      let key = this.state.keyList[this.state.keySelection.substring(0, this.state.keySelection.indexOf('m')-1)]
+      let mode = this.state.mode[this.state.keySelection.substring(this.state.keySelection.indexOf('m'), this.state.keySelection.length)]
+      params.max_key = key
+      params.min_key = key
+      params.max_mode = mode
+      params.min_mode = mode
+    }
+
+    if(this.state.timeSelection) {
+      params.max_time_signature = parseInt(this.state.timeSelection)
+      params.min_time_signature = parseInt(this.state.timeSelection)
+    }
+
+    console.log(params)
+
+    spotifyApi.getRecommendations(params)
       .then((data) => {
         console.log(data)
         this.setState({
@@ -84,7 +96,8 @@ class RecommendationForm extends React.Component {
 
   backButton() {
     this.setState({
-      recommendedSongs: null
+      recommendedSongs: null,
+      red: false
     })
   }
   
@@ -93,7 +106,7 @@ class RecommendationForm extends React.Component {
     const genres = this.state.genres ? this.state.genres.map(item => <option>{item}</option>) : null
     const majorKeys = Object.keys(this.state.keyList).map(item => <option>{item} major</option>)
     const minorKeys = Object.keys(this.state.keyList).map(item => <option>{item} minor</option>)
-    const timeSignatures = Array.from({length: 8}, (v, k) => k+1).map(item => <option>{item}</option>)
+    const timeSignatures = [3, 4].map(item => <option>{item}</option>)
     const recommendedSongs = this.state.recommendedSongs ? this.state.recommendedSongs.map((item) => 
         <FoundSong song={item} />    ) : null
 
@@ -116,12 +129,14 @@ class RecommendationForm extends React.Component {
     return(
       
       <div>
-        <h1>All Keyed Up</h1>
+        <a href="/"><h1>All Keyed Up</h1></a>
         <div style={{display: this.state.recommendedSongs && "none"}} >
           <FormContainer className="jumbotron">
             <div>
               <H2>Choose your favourite genre and key...</H2>
-              <label>Choose a Genre (<strong>required</strong>): </label>
+              <label className={this.state.red ? "font-weight-bold" : null}>Choose a Genre 
+                <strong className={this.state.red ? "text-danger": null}>(required)</strong>
+              : </label>
               <select onChange={this.handleChange} id="genreSelection" name="genreSelection" value={this.state.genreSelection} required>
                 <option>--Select genre--</option>
                 {genres}
@@ -148,9 +163,11 @@ class RecommendationForm extends React.Component {
 
         <ResultsContainer style={{display: !this.state.recommendedSongs && "none"}}>
           <Results 
-            recommendedSongs={recommendedSongs} 
+            recommendedSongs={recommendedSongs}
+            listLength={this.state.recommendedSongs? recommendedSongs.length : 0} 
             keySelection={this.state.keySelection}
             genreSelection={this.state.genreSelection}
+            timeSelection={this.state.timeSelection}
             backButton = {this.backButton}  
           />
         </ResultsContainer>

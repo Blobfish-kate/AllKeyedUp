@@ -42,9 +42,9 @@ function Homepage(props) {
 
     let anchor
     if(process.env.NODE_ENV !== 'production') {
-      anchor = 'ec2-3-10-223-4.eu-west-2.compute.amazonaws.com'
+      anchor = 'http://localhost:8888/login'
     } else {
-      anchor = 'ec2-3-10-223-4.eu-west-2.compute.amazonaws.com'
+      anchor = 'http://ec2-3-10-223-4.eu-west-2.compute.amazonaws.com:8888/login'
     }
 
     return(
